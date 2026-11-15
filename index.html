@@ -3,42 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#10264b">
-  <meta name="description" content="ระบบสารสนเทศกลุ่มบริหารงานวิชาการ โรงเรียนน้ำขุ่นวิทยา">
-  <title>ระบบสารสนเทศกลุ่มบริหารงานวิชาการ | โรงเรียนน้ำขุ่นวิทยา</title>
+  <meta name="robots" content="noindex">
+  <meta http-equiv="refresh" content="0;url=https://script.google.com/macros/s/AKfycbwHntqYaSnHLykLdpfuWH2vdSC1bggGntDG1_TdCM_F6Dx30UEIGEHpE4v4P9q-XQoB/exec">
+  <title>กำลังเปิดระบบสารสนเทศ</title>
+  <script>
+    window.location.replace("https://script.google.com/macros/s/AKfycbwHntqYaSnHLykLdpfuWH2vdSC1bggGntDG1_TdCM_F6Dx30UEIGEHpE4v4P9q-XQoB/exec");
+  </script>
   <style>
-    *{box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0}
-    body{font-family:Arial,"Noto Sans Thai",sans-serif;background:#f3f6fb;color:#183153}
-    .app{height:100%;display:flex;flex-direction:column}
-    .loading{min-height:48px;padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:14px;background:#fff;border-bottom:1px solid #e5eaf2}
-    .dot{width:8px;height:8px;border-radius:50%;background:#2563eb;animation:pulse 1s infinite alternate}
-    @keyframes pulse{to{opacity:.25;transform:scale(.75)}}
-    iframe{display:block;width:100%;height:calc(100% - 48px);border:0;background:#fff;flex:1}
-    .fallback{font-size:12px;color:#64748b;text-decoration:underline}
-    noscript{padding:20px;text-align:center}
+    body{font-family:Arial,sans-serif;background:#f3f6fb;color:#183153;min-height:100vh;display:grid;place-items:center;margin:0;padding:24px;box-sizing:border-box}
+    main{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:28px;max-width:520px;text-align:center;box-shadow:0 12px 32px #0f172a12}
+    a{display:inline-block;margin-top:16px;background:#1d4ed8;color:white;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:700}
   </style>
 </head>
 <body>
-  <main class="app">
-    <div class="loading" id="loading">
-      <span class="dot" aria-hidden="true"></span>
-      <span>กำลังเชื่อมต่อระบบสารสนเทศ...</span>
-      <a class="fallback" href="https://script.google.com/macros/s/AKfycbwHntqYaSnHLykLdpfuWH2vdSC1bggGntDG1_TdCM_F6Dx30UEIGEHpE4v4P9q-XQoB/exec" target="_blank" rel="noopener">เปิดระบบโดยตรง</a>
-    </div>
-    <iframe
-      id="appFrame"
-      title="ระบบสารสนเทศกลุ่มบริหารงานวิชาการ โรงเรียนน้ำขุ่นวิทยา"
-      src="https://script.google.com/macros/s/AKfycbwHntqYaSnHLykLdpfuWH2vdSC1bggGntDG1_TdCM_F6Dx30UEIGEHpE4v4P9q-XQoB/exec"
-      allow="clipboard-read; clipboard-write; fullscreen"
-      allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin">
-    </iframe>
+  <main>
+    <h2>กำลังเปิดระบบสารสนเทศ</h2>
+    <p>กำลังเปลี่ยนไปยัง Google Apps Script เพื่อให้ระบบ Login และการแสดงข้อมูลทำงานได้</p>
+    <a href="https://script.google.com/macros/s/AKfycbwHntqYaSnHLykLdpfuWH2vdSC1bggGntDG1_TdCM_F6Dx30UEIGEHpE4v4P9q-XQoB/exec">คลิกเพื่อเปิดระบบ</a>
   </main>
-  <noscript>กรุณาเปิดใช้งาน JavaScript เพื่อเข้าใช้งานระบบ</noscript>
-  <script>
-    const frame=document.getElementById('appFrame');
-    frame.addEventListener('load',()=>{document.getElementById('loading').style.display='none';});
-  </script>
 </body>
 </html>
