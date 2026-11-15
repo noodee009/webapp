@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#2555dc">
+  <title>ระบบสารสนเทศกลุ่มบริหารงานวิชาการ | โรงเรียนน้ำขุ่นวิทยา</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#2858e8; --purple:#6b3be5; --pink:#ed4fa5; --cyan:#0dbdc4; --orange:#fa9a34; --ink:#172a4c; --muted:#6d7b96; --stroke:#e3e9f9; }
+    *{box-sizing:border-box;font-family:'Google Sans',sans-serif} html{scroll-behavior:smooth} body{margin:0;color:var(--ink);font-family:'Google Sans',sans-serif;background:#eef5ff;min-height:100vh}
+    button,input,select,textarea{font:inherit} canvas,table{font-family:'Google Sans',sans-serif} button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.55} img{display:block;max-width:100%}
+    .backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(145deg,#eaf4ff 0%,#eae9ff 45%,#fff2f9 100%);background-position:center;background-size:cover}
+    .backdrop:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(125deg,rgba(242,248,255,.92),rgba(255,246,255,.87))}
+    .site{max-width:1420px;margin:auto;padding:28px 26px 55px}
+    .head{position:relative;overflow:hidden;color:#fff;border-radius:28px;padding:25px 32px;display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(115deg,#1848c4 0%,#5d40d8 59%,#d84aa5 100%);box-shadow:0 16px 35px #5d64a436}
+    .head:before,.head:after{content:'';position:absolute;width:260px;height:260px;border:1px solid #ffffff33;border-radius:50%;right:26%;top:-190px;pointer-events:none}
+    .head:after{width:380px;height:380px;right:-130px;top:20px;background:#ffffff0b}
+    .identity{display:flex;align-items:center;gap:20px;position:relative;z-index:1;min-width:0}
+    .school-logo{width:92px;height:92px;border-radius:24px;flex:0 0 92px;object-fit:contain;padding:10px;background:#fff;box-shadow:0 6px 18px #0e1f4e38}
+    .fallback-logo{display:grid;place-items:center;font-family:'Google Sans',sans-serif;font-size:30px;font-weight:800;color:#3159ce}
+    .eyebrow{font-family:'Google Sans',sans-serif;font-size:13px;letter-spacing:.7px;color:#e2eaff;font-weight:600}
+    .school-name{margin:0;font-family:'Google Sans',sans-serif;font-size:clamp(25px,2.6vw,37px);font-weight:800;line-height:1.28}
+    .dept{margin-top:4px;font-family:'Google Sans',sans-serif;font-size:clamp(17px,1.5vw,21px);font-weight:600}
+    .affiliation{opacity:.88;font-size:14px;margin-top:2px}
+    .head-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;justify-content:flex-end;z-index:1}
+    .btn{border:0;border-radius:13px;padding:11px 16px;display:inline-flex;gap:8px;align-items:center;justify-content:center;font-weight:700;transition:transform .18s,box-shadow .18s}
+    .btn:hover:not(:disabled){transform:translateY(-1px)}
+    .btn-light{background:#fff;color:#2f49bf;box-shadow:0 5px 14px #1b217e25}
+    .btn-glass{background:#ffffff24;color:#fff;border:1px solid #ffffff50}
+    .btn-primary{color:#fff;background:linear-gradient(110deg,#2465ed,#7143eb);box-shadow:0 5px 14px #6973e047}
+    .btn-pink{color:#fff;background:linear-gradient(105deg,#d946a9,#fa718a)}
+    .btn-subtle{color:#3752a3;background:#f1f4ff;border:1px solid #dbe3fd}
+    .btn-small{padding:9px 12px;font-size:13px}
+    .tool-row{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin:22px 0 18px}
+    .intro h2{font-family:'Google Sans',sans-serif;font-size:21px;margin:0 0 3px;font-weight:700}
+    .intro p{color:var(--muted);font-size:14px;margin:0}
+    .status{display:flex;align-items:center;gap:8px;background:#ffffffdb;border:1px solid var(--stroke);padding:10px 14px;border-radius:999px;color:#52627f;font-size:13px}
+    .dot{width:8px;height:8px;border-radius:50%;background:#12b981;box-shadow:0 0 0 3px #12b98122;flex-shrink:0}
+    .load-error{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 0 16px;padding:15px 17px;border:1px solid #f0c5cf;border-radius:15px;background:#fff4f6;color:#8e2945;font-size:14px;line-height:1.6}
+    .load-error .error-text{min-width:0;flex:1;overflow-wrap:anywhere}
+    .load-error .btn{flex:0 0 auto}
+    .chart-warning{font-size:12px;color:#a15b16;text-align:center;margin-top:8px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:15px}
+    .kpi{border-radius:21px;background:#ffffffef;box-shadow:0 9px 22px #6475a517;border:1px solid #fff;padding:19px 18px;position:relative;overflow:hidden;min-height:136px}
+    .kpi:after{content:'';position:absolute;width:110px;height:110px;border-radius:50%;right:-39px;top:-44px;background:var(--tint)}
+    .kpi-top{display:flex;align-items:center;gap:10px;color:#6b7791;font-weight:700;font-size:14px}
+    .kpi-icon{display:grid;place-items:center;border-radius:13px;width:39px;height:39px;background:var(--tint);font-family:'Google Sans',sans-serif;font-size:18px;color:var(--accent)}
+    .kpi-num{font-family:'Google Sans',sans-serif;font-weight:800;font-size:clamp(29px,3vw,41px);line-height:1.25;color:var(--accent);margin-top:13px}
+    .kpi-suffix{font-size:12px;color:#8792a8;font-weight:500;margin-left:6px}
+    .layout{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(340px,.82fr);gap:18px;margin-top:18px}
+    .stack{display:grid;gap:18px;align-content:start}
+    .panel{background:#ffffffed;border:1px solid #fff;border-radius:22px;box-shadow:0 10px 30px #6377b81a;padding:22px 23px;min-width:0}
+    .panel-title{display:flex;gap:11px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:17px}
+    .panel-title h3{font-family:'Google Sans',sans-serif;font-size:17px;font-weight:700;margin:0}
+    .tag{font-size:12px;color:#6545c8;background:#f0eaff;border-radius:999px;padding:5px 11px;font-weight:700}
+    .chart-area{height:265px;position:relative}
+    .chart-area.donut{height:235px;max-width:350px;margin:auto}.chart-area.status-grade{height:320px}
+    .legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;color:#60708c;font-size:13px;margin-top:8px}
+    .legend-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:middle}
+    .table-scroll{overflow:auto;max-height:570px;border-radius:15px;border:1px solid #e7ebf6}
+    table{width:100%;border-collapse:separate;border-spacing:0;min-width:490px;font-variant-numeric:tabular-nums}
+    th{position:sticky;top:0;z-index:1;background:#3e61d4;color:#fff;font-size:13px;white-space:nowrap;padding:12px 8px;text-align:center}
+    td{padding:12px 9px;text-align:center;border-bottom:1px solid #e9edf7;font-size:14px}
+    td:first-child{text-align:left;font-weight:700;padding-left:15px}
+    tbody tr:nth-child(odd){background:#f8faff} tbody tr:hover{background:#f0f4ff}
+    tfoot td{color:#fff;background:#3743ad;font-weight:800;font-size:15px;position:sticky;bottom:0}
+    .insight{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .insight-item{padding:16px 14px;border-radius:16px;background:linear-gradient(135deg,#f5f8ff,#fff6fc)}
+    .insight-label{font-size:13px;color:#78859c}
+    .insight-value{font-family:'Google Sans',sans-serif;font-weight:700;font-size:19px;margin-top:8px;overflow-wrap:anywhere}
+    .insight-sub{font-size:12px;color:#8a93a7;margin-top:2px}
+    .foot{margin:28px auto 0;text-align:center;color:#687795;font-size:13px;line-height:1.8}
+    .foot strong{color:#3551a3}
+    .veil{position:fixed;inset:0;display:grid;place-items:center;z-index:100;background:#12295c80;padding:20px;backdrop-filter:blur(4px)}
+    .modal{width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:23px;background:#fff;box-shadow:0 22px 70px #1d285d65;padding:25px}
+    .modal-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}
+    .modal-head h2{margin:0;font-family:'Google Sans',sans-serif;font-size:23px;color:#2d438c}
+    .close{font-size:25px;background:#f1f4fc;border:0;border-radius:11px;width:36px;height:36px;color:#5c6886}
+    .field{display:grid;gap:7px;margin:12px 0}
+    .field label{font-weight:700;color:#495a80;font-size:14px}
+    .field input{width:100%;border:1px solid #dbe3f5;border-radius:12px;padding:11px 12px;outline:none;background:#f8faff}
+    .field input:focus{border-color:#6d60dc;box-shadow:0 0 0 3px #7464ed17;background:#fff}
+    .field-note{font-size:12px;color:#7c879e;line-height:1.5}
+    .tabs{display:flex;flex-wrap:wrap;gap:7px;padding:5px;background:#eff3fe;border-radius:13px;margin:16px 0}
+    .tabs button{flex:1 1 125px;border:0;border-radius:10px;padding:10px 6px;background:transparent;color:#647495;font-weight:700}
+    .tabs button.active{color:#fff;background:linear-gradient(115deg,#446ce5,#9a53dc)}
+    .admin-section{display:none}.admin-section.active{display:block}
+    .box-tip{padding:12px 14px;border:1px solid #dbe6ff;background:#f6f9ff;border-radius:13px;font-size:13px;color:#586885;line-height:1.7;margin:12px 0}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .thumbs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+    .thumb{height:120px;border:1px dashed #b7c5ea;border-radius:13px;display:grid;place-items:center;background:#f3f6ff;background-position:center;background-size:cover;overflow:hidden;color:#8692b5;font-size:13px}
+    .thumb img{max-height:110px;object-fit:contain}
+    .rule{border:0;border-top:1px solid #e8edf8;margin:18px 0}
+    .inline-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .message{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:130;max-width:min(580px,calc(100vw - 25px));border-radius:14px;background:#253b70;color:#fff;padding:13px 20px;box-shadow:0 10px 35px #22336a45;font-size:14px;line-height:1.5}
+    .message.bad{background:#b42f51}
+    .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    /* V6: สรุป Dashboard เป็นระดับชั้น แยกชาย/หญิง และใช้แหล่งข้อมูลเฉพาะแท็บห้องเรียนกับชีท 0 ร มส */
+    .status-note{font-size:13px;color:#677796;line-height:1.7;margin:8px 0 14px}
+    .status-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+    .status-tile{border-radius:17px;padding:17px 10px;text-align:center;background:linear-gradient(135deg,#fff,#f4f6ff);border:1px solid #e2e9fb}
+    .status-tile strong{display:block;font-size:31px;font-weight:800;margin-top:8px}
+    .status-tile:nth-child(1){background:#fff0f1;color:#d93d59}
+    .status-tile:nth-child(2){background:#fff8e7;color:#b97c17}
+    .status-tile:nth-child(3){background:#fff0f8;color:#cb4b99}
+    .status-profile{padding:16px 17px;background:linear-gradient(115deg,#ebf3ff,#f9efff);border-radius:15px;margin-top:12px}
+    .status-profile h3{margin:0 0 5px;font-size:20px;color:#344eab}
+    .status-score{padding:15px;border-radius:15px;background:#e8fbf6;color:#167c68;margin:13px 0}
+    .status-subjects{max-height:205px;overflow:auto;padding-left:20px;font-size:13px;line-height:1.8;color:#52658c}
+    .status-help{padding:12px 14px;background:#f5f8ff;border-radius:11px;font-size:13px;color:#546584;line-height:1.65}
+    /* รายงาน PDF สร้างจาก Google Docs ต้นฉบับ เพื่อรักษารูปแบบเอกสาร */
+    .report-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}
+    .report-preview-wrap{overflow:auto;padding:12px;background:#eef1f5;border:1px solid #dfe4eb;border-radius:12px;min-height:240px;display:block}
+    .report-pdf-pages{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%}
+    .report-pdf-page{width:max-content;max-width:100%;padding:7px;background:#fff;border:1px solid #d9dee8;border-radius:7px;box-shadow:0 3px 12px #18243a18}
+    .report-pdf-page canvas{display:block;max-width:100%;height:auto}
+    .report-pdf-page-label{font-size:12px;color:#66738a;text-align:center;padding:5px 0 1px}
+    .report-ready{width:100%;padding:22px 18px;text-align:center;background:#fff;border-radius:10px;line-height:1.8}.report-ready-title{font-weight:700;font-size:17px;color:#1f365c}.report-ready-detail{font-size:13px;color:#59677d;margin-top:6px}
+    .report-loading{padding:22px;text-align:center;color:#52658c;background:#fff;border-radius:10px;line-height:1.7}
+    .hidden{display:none!important}
+    @media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:1fr}.panel{padding:19px}}
+    @media(max-width:650px){.site{padding:12px 12px 30px}.head{padding:20px 17px;border-radius:20px;flex-direction:column;align-items:stretch}.identity{gap:13px}.school-logo{width:70px;height:70px;flex-basis:70px;border-radius:17px}.school-name{font-size:23px}.dept{font-size:16px}.affiliation{font-size:12px}.head-actions{justify-content:stretch}.head-actions .btn{flex:1}.kpi-grid{grid-template-columns:repeat(2,1fr);gap:10px}.kpi{padding:14px 13px;min-height:115px}.kpi-num{font-size:30px}.kpi-top{font-size:12px}.kpi-icon{width:33px;height:33px}.kpi:last-child{grid-column:1/-1}.insight{grid-template-columns:1fr}.panel{padding:16px}.two-col{grid-template-columns:1fr}.modal{padding:17px}.chart-area{height:230px}.chart-area.status-grade{height:340px}}
+    @media print{.head-actions,.btn,.status,.foot,.backdrop:after{display:none!important}body{background:#fff}.site{padding:0}.head{background:#2f52bb!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.panel,.kpi{break-inside:avoid;box-shadow:none;border:1px solid #ddd}.layout{grid-template-columns:1fr 1fr}.table-scroll{max-height:none}}
+
+
+  </style>
+</head>
+<body>
+  <div id="pageBackground" class="backdrop"></div>
+  <main class="site">
+    <header class="head">
+      <div class="identity">
+        <div id="logoFallback" class="school-logo fallback-logo">นว</div>
+        <img id="schoolLogo" class="school-logo hidden" alt="โลโก้โรงเรียนน้ำขุ่นวิทยา">
+        <div>
+          <div class="eyebrow">ACADEMIC INFORMATION DASHBOARD</div>
+          <h1 class="school-name">โรงเรียนน้ำขุ่นวิทยา</h1>
+          <div class="dept">กลุ่มบริหารงานวิชาการ</div>
+          <div class="affiliation">สังกัดองค์การบริหารส่วนจังหวัดอุบลราชธานี</div>
+        </div>
+      </div>
+      <div class="head-actions">
+        <button id="refreshBtn" class="btn btn-glass" type="button" title="ดึงข้อมูลล่าสุด">↻ รีเฟรช</button>
+        <button id="printBtn" class="btn btn-glass" type="button">▤ พิมพ์รายงาน</button>
+        <button id="studentStatusBtn" class="btn btn-glass" type="button">⌕ ตรวจสอบสถานะ</button>
+        <button id="adminBtn" class="btn btn-light" type="button">⚙ จัดการระบบ</button>
+      </div>
+    </header>
+
+    <section class="tool-row" aria-label="สถานะของระบบ">
+      <div class="intro"><h2>ภาพรวมข้อมูลนักเรียน</h2><p id="dateLine">ข้อมูลสรุประดับชั้น ม.1–ม.6 จากรายชื่อนักเรียน 30 ห้องเรียน</p></div>
+      <div class="status"><span class="dot" id="statusDot"></span><span id="updateStatus">กำลังเชื่อมต่อ Google Sheets...</span></div>
+    </section>
+
+    <section id="loadError" class="load-error hidden" role="alert"></section>
+
+    <section class="kpi-grid" aria-label="สรุปข้อมูล">
+      <div class="kpi" style="--accent:#4b5fe4;--tint:#edf0ff"><div class="kpi-top"><span class="kpi-icon">▦</span>ระดับชั้น</div><div class="kpi-num"><span id="v-levels">—</span><span class="kpi-suffix">ระดับ</span></div></div>
+      <div class="kpi" style="--accent:#159c9f;--tint:#e8fbf9"><div class="kpi-top"><span class="kpi-icon">▥</span>จำนวนห้องเรียน</div><div class="kpi-num"><span id="v-rooms">—</span><span class="kpi-suffix">ห้อง</span></div></div>
+      <div class="kpi" style="--accent:#2d80db;--tint:#e8f5ff"><div class="kpi-top"><span class="kpi-icon">♙</span>นักเรียนทั้งหมด</div><div class="kpi-num"><span id="v-total">—</span><span class="kpi-suffix">คน</span></div></div>
+      <div class="kpi" style="--accent:#e34c9f;--tint:#ffedf7"><div class="kpi-top"><span class="kpi-icon">Σ</span>รายการติด 0 / ร / มส</div><div class="kpi-num"><span id="v-status-total">—</span><span class="kpi-suffix">รายการ</span></div></div>
+      <div class="kpi" style="--accent:#da8530;--tint:#fff4e4"><div class="kpi-top"><span class="kpi-icon">✓</span>มีคะแนนพฤติกรรม</div><div class="kpi-num"><span id="v-behavior">—</span><span class="kpi-suffix">คน</span></div></div>
+    </section>
+
+    <div class="layout">
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-title"><h3>จำนวนนักเรียนแยกตามระดับชั้นและเพศ</h3><span class="tag">ชายสีน้ำเงิน • หญิงสีชมพู</span></div>
+          <div class="chart-area"><canvas id="gradeChart" aria-label="จำนวนนักเรียนชายและหญิงแยกตามระดับชั้น"></canvas></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><h3>สัดส่วนนักเรียนชายและหญิง</h3><span class="tag">ภาพรวม ม.1–ม.6</span></div>
+          <div class="chart-area donut"><canvas id="genderChart" aria-label="สัดส่วนนักเรียนชายและหญิง"></canvas></div>
+          <div class="legend"><span><i class="legend-dot" style="background:#3478f6"></i>นักเรียนชาย <b id="maleLabel">—</b></span><span><i class="legend-dot" style="background:#ed5ca8"></i>นักเรียนหญิง <b id="femaleLabel">—</b></span></div>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><h3>นักเรียนติด 0 / ร / มส แยกตามระดับชั้นและเพศ</h3><span class="tag">นับนักเรียนไม่ซ้ำในแต่ละสถานะ</span></div>
+          <div class="chart-area status-grade"><canvas id="statusGradeChart" aria-label="นักเรียนติด 0 ร มส แยกตามระดับชั้นและเพศ"></canvas></div>
+          <p class="field-note" style="margin-top:10px">จำนวนรายการรายวิชาที่ยังไม่แก้ไข: ติด 0 <b id="zeroRecordsLabel">—</b> • ติด ร <b id="rRecordsLabel">—</b> • ติด มส <b id="msRecordsLabel">—</b> รายการ (นักเรียนหนึ่งคนอาจมีได้มากกว่าหนึ่งสถานะ)</p>
+        </section>
+        <section class="panel">
+          <div class="panel-title"><h3>ข้อมูลเชิงวิเคราะห์</h3><span class="tag">Academic Insights</span></div>
+          <div class="insight">
+            <div class="insight-item"><div class="insight-label">ระดับชั้นที่มีนักเรียนมากที่สุด</div><div class="insight-value" id="maxGrade">—</div><div class="insight-sub" id="maxCount">—</div></div>
+            <div class="insight-item"><div class="insight-label">ระดับชั้นที่มีนักเรียนน้อยที่สุด</div><div class="insight-value" id="minGrade">—</div><div class="insight-sub" id="minCount">—</div></div>
+            <div class="insight-item"><div class="insight-label">นักเรียนที่มีคะแนนพฤติกรรม</div><div class="insight-value" id="behaviorSummary">—</div><div class="insight-sub" id="behaviorNote">ข้อมูลจากแท็บห้องเรียน</div></div>
+          </div>
+        </section>
+      </div>
+      <section class="panel" style="align-self:start">
+        <div class="panel-title"><h3>ตารางสารสนเทศนักเรียนแยกตามระดับชั้น</h3><span class="tag" id="rowTag">6 ระดับชั้น</span></div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>ระดับชั้น</th><th>ชาย</th><th>หญิง</th><th>รวม</th><th>ชายติด 0/ร/มส</th><th>หญิงติด 0/ร/มส</th><th>ติดรวม</th></tr></thead>
+            <tbody id="tableBody"><tr><td colspan="7" style="text-align:center">กำลังประมวลผล...</td></tr></tbody>
+            <tfoot><tr><td>รวมทั้งหมด</td><td id="t-male">—</td><td id="t-female">—</td><td id="t-total">—</td><td id="t-status-male">—</td><td id="t-status-female">—</td><td id="t-status-total">—</td></tr></tfoot>
+          </table>
+        </div>
+        <p class="field-note" style="margin-top:12px">สรุปจากแท็บ ม.1/1–ม.6/5 รวม 30 ห้องเรียน • จำแนกเพศจากคำนำหน้าชื่อในทะเบียน • จำนวนติด 0/ร/มส ในตารางนับนักเรียนไม่ซ้ำ</p>
+      </section>
+    </div>
+    <footer class="foot"><strong>ระบบสารสนเทศกลุ่มบริหารงานวิชาการ โรงเรียนน้ำขุ่นวิทยา</strong><div>สังกัดองค์การบริหารส่วนจังหวัดอุบลราชธานี • สถิติภาพรวมระดับชั้น ม.1–ม.6</div></footer>
+  </main>
+
+  <!-- หน้าตรวจสอบสถานะ แยกออกจาก Dashboard เพื่อคงรูปแบบเดิมทั้งหมด -->
+  <div id="studentStatusOverlay" class="veil hidden" role="dialog" aria-modal="true" aria-labelledby="studentStatusTitle">
+    <div class="modal" style="width:min(1000px,100%)">
+      <div class="modal-head"><h2 id="studentStatusTitle">ตรวจสอบสถานะนักเรียน</h2><button id="closeStudentStatus" class="close" type="button" aria-label="ปิด">×</button></div>
+      <p class="status-note">ตรวจสอบเฉพาะนักเรียน <b>ม.1/1 ถึง ม.6/5</b> ในส่วนผลการเรียน <b>0 / ร / มส</b> และ <b>คะแนนพฤติกรรม</b></p>
+      <div id="studentStatusLogin">
+        <div class="box-tip">เข้าสู่ระบบด้วยเลขบัตรประจำตัวประชาชน 13 หลัก โดยกรอกเลขเดียวกันทั้งช่อง Username และ Password เมื่อตรวจสอบสำเร็จจะแสดงข้อมูลของนักเรียนเจ้าของเลขบัตรเท่านั้น</div>
+        <form id="studentStatusLoginForm">
+          <div class="field"><label for="statusStudentUser">Username — เลขบัตรประจำตัวประชาชน</label><input id="statusStudentUser" type="text" inputmode="numeric" pattern="[0-9]{13}" minlength="13" maxlength="13" required autocomplete="off" placeholder="กรอกเลขบัตรประชาชน 13 หลัก"></div>
+          <div class="field"><label for="statusStudentPassword">Password — กรอกเลขบัตรประชาชนเดิมอีกครั้ง</label><input id="statusStudentPassword" type="password" inputmode="numeric" pattern="[0-9]{13}" minlength="13" maxlength="13" required autocomplete="off" placeholder="กรอกเลขบัตรประชาชน 13 หลัก"></div>
+          <button class="btn btn-primary" id="statusLoginBtn" type="submit">เข้าสู่ระบบตรวจสอบสถานะ</button>
+        </form>
+      </div>
+      <div id="studentStatusLookup" class="hidden">
+        <form id="studentStatusForm">
+          <div class="field"><label for="studentStatusSearch">ผู้ดูแลระบบ: เลขบัตรประชาชน หรือชื่อ–นามสกุลนักเรียน</label><input id="studentStatusSearch" required maxlength="120" placeholder="กรอกเลขบัตรประชาชน หรือชื่อ–นามสกุล" autocomplete="off" spellcheck="false"></div>
+          <div class="inline-actions"><button class="btn btn-primary" id="statusSearchBtn" type="submit">⌕ ตรวจสอบข้อมูล</button><button class="btn btn-subtle" id="statusClearBtn" type="button">ล้างข้อมูล</button></div>
+        </form>
+        <div class="inline-actions"><button class="btn btn-subtle hidden" id="statusLogoutBtn" type="button">ออกจากระบบนักเรียน</button></div>
+        <div id="studentStatusResult" class="hidden" aria-live="polite"></div>
+        <p class="status-note">นักเรียนตรวจสอบได้เฉพาะข้อมูลของตนเองหลังเข้าสู่ระบบ ส่วนผู้ดูแลระบบสามารถค้นหาด้วยเลขบัตรประชาชนหรือชื่อ–นามสกุลได้</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="adminOverlay" class="veil hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <div class="modal-head"><h2 id="modalTitle">ตั้งค่าระบบสารสนเทศ</h2><button id="closeAdmin" class="close" aria-label="ปิด">×</button></div>
+      <div id="loginView">
+        <p class="field-note">เฉพาะผู้ดูแลระบบเท่านั้นที่สามารถตรวจสอบข้อมูลทั้งหมดและเปลี่ยนการตั้งค่าได้</p>
+        <form id="loginForm">
+          <div class="field"><label for="adminUsername">ชื่อผู้ใช้ (Username)</label><input id="adminUsername" type="text" value="admin" required maxlength="32" autocomplete="username" spellcheck="false"></div>
+          <div class="field"><label for="adminPassword">รหัสผ่าน (Password)</label><input id="adminPassword" type="password" autocomplete="current-password" minlength="4" maxlength="64" required placeholder="รหัสผ่านตั้งแต่ 4 ตัวอักษรขึ้นไป"></div>
+          <button class="btn btn-primary" type="submit" id="loginBtn">เข้าสู่ระบบ</button>
+          <p class="field-note">ชื่อผู้ใช้คือ <b>admin</b> • รหัสผ่านเริ่มต้นดูจาก Execution log หลังรัน setupSystem() หรือใช้รหัสที่เคยตั้งไว้</p>
+        </form>
+      </div>
+      <div id="adminView" class="hidden">
+        <div class="tabs" role="tablist"><button class="active" data-tab="data" type="button">ข้อมูลนักเรียน</button><button data-tab="brand" type="button">ภาพและโลโก้</button><button data-tab="notify" type="button">การแจ้งเตือน</button><button data-tab="security" type="button">ความปลอดภัย</button></div>
+        <section id="tab-data" class="admin-section active">
+          <h3>แหล่งข้อมูลของระบบ</h3>
+          <div class="box-tip">ระบบอ่านข้อมูลจาก Google Sheets โดยตรงและไม่ใช้ชีทสรุปหรือชีทข้อมูลอื่นเป็นแหล่งรายชื่อนักเรียน</div>
+          <div class="status-help"><b>รายชื่อนักเรียนและ Dashboard</b><br>ใช้เฉพาะแท็บ ม.1/1 ถึง ม.6/5 จำนวน 30 ห้องเรียน โดยอ่านชื่อ–สกุล เลขบัตรประชาชน และคะแนนพฤติกรรมจากหัวตารางของแต่ละห้อง พร้อมจำแนกเพศจากคำนำหน้าชื่อ</div>
+          <div class="status-help" style="margin-top:10px"><b>ผลการเรียน</b><br>ใช้เฉพาะชีท “แสดงผล 0 ร มส” และแสดงรายการสถานะ 0 / ร / มส ที่ยังไม่ระบุว่าแก้ไขเสร็จแล้ว</div>
+          <p class="field-note" style="margin-top:12px">รหัส Google Sheets: 18Lk1OZjT4uKitLpyrrxB0MRBHzKquR3Xji_2T76R7q8 • ข้อมูลใน Dashboard แสดงเป็นสถิติรวม ไม่เปิดเผยเลขบัตรประชาชน</p>
+        </section>
+        <section id="tab-brand" class="admin-section">
+          <h3>ปรับแต่งภาพลักษณ์ระบบ</h3>
+          <div class="thumbs"><div><div id="logoThumb" class="thumb">โลโก้ปัจจุบัน</div><div class="field-note" style="margin-top:5px">โลโก้โรงเรียน</div></div><div><div id="bgThumb" class="thumb">ภาพพื้นหลังปัจจุบัน</div><div class="field-note" style="margin-top:5px">ภาพพื้นหลังหน้า Dashboard</div></div></div>
+          <div class="two-col"><div class="field"><label for="logoFile">อัปโหลดโลโก้ (PNG/JPG/WebP)</label><input id="logoFile" type="file" accept="image/png,image/jpeg,image/webp"></div><div class="field"><label for="backgroundFile">อัปโหลดพื้นหลัง (PNG/JPG/WebP)</label><input id="backgroundFile" type="file" accept="image/png,image/jpeg,image/webp"></div></div>
+          <div class="inline-actions"><button id="uploadLogoBtn" class="btn btn-primary btn-small" type="button">บันทึกโลโก้</button><button id="uploadBgBtn" class="btn btn-pink btn-small" type="button">บันทึกพื้นหลัง</button></div>
+          <p class="field-note">ระบบย่อภาพก่อนอัปโหลดเพื่อช่วยให้เปิดหน้าเว็บได้รวดเร็วขึ้น • รูปภาพเก็บใน Google Drive ที่กำหนดไว้</p>
+        </section>
+        <section id="tab-notify" class="admin-section">
+          <h3>แจ้งเตือนผ่าน Telegram และ LINE</h3>
+          <p id="notifyStatus" class="field-note">กำลังตรวจสอบการตั้งค่า...</p>
+          <div class="two-col">
+            <div><div class="field"><label for="tgToken">Telegram Bot Token</label><input id="tgToken" type="password" placeholder="กรอกเมื่อเพิ่ม/เปลี่ยน Token" autocomplete="off"></div><div class="field"><label for="tgChat">Telegram Chat ID</label><input id="tgChat" placeholder="เช่น -100... หรือเลขแชต" autocomplete="off"></div></div>
+            <div><div class="field"><label for="lineToken">LINE Channel Access Token</label><input id="lineToken" type="password" placeholder="Messaging API Channel Token" autocomplete="off"></div><div class="field"><label for="lineTo">LINE User ID / Group ID</label><input id="lineTo" placeholder="เช่น U... หรือ C..." autocomplete="off"></div></div>
+          </div>
+          <div class="box-tip">LINE ใช้ <b>LINE Messaging API</b> ไม่ใช่ LINE Notify ที่เลิกให้บริการแล้ว ต้องสร้าง LINE Official Account / Messaging API และให้บัญชีปลายทางเพิ่มเพื่อนหรือเพิ่มบอตเข้ากลุ่มตามเงื่อนไขของ LINE</div>
+          <label style="display:inline-flex;gap:6px;align-items:center;font-size:13px"><input id="clearTg" type="checkbox"> ลบการตั้งค่า Telegram เดิม</label>
+          <label style="display:inline-flex;gap:6px;align-items:center;font-size:13px;margin-left:12px"><input id="clearLine" type="checkbox"> ลบการตั้งค่า LINE เดิม</label>
+          <div class="inline-actions"><button id="saveNotifyBtn" class="btn btn-primary btn-small" type="button">บันทึกการแจ้งเตือน</button><button id="testNotifyBtn" class="btn btn-subtle btn-small" type="button">ทดสอบส่งข้อความ</button></div>
+          <p class="field-note">Token ถูกเก็บไว้ใน Script Properties และจะไม่แสดงกลับมาบนหน้าจอหลังบันทึก</p>
+        </section>
+        <section id="tab-security" class="admin-section">
+          <h3>บัญชีผู้ดูแลระบบ</h3>
+          <div class="box-tip"><b>ชื่อผู้ใช้: admin</b> (กำหนดตายตัว) • สามารถเปลี่ยนรหัสผ่านได้ด้วยตนเองตั้งแต่ <b>4 ตัวอักษรขึ้นไป</b> โดยไม่ต้องแก้ไขโค้ด</div>
+          <form id="changePasswordForm">
+            <div class="field"><label for="oldPassword">รหัสผ่านปัจจุบัน</label><input id="oldPassword" type="password" required autocomplete="current-password" maxlength="64"></div>
+            <div class="two-col">
+              <div class="field"><label for="newPassword">รหัสผ่านใหม่</label><input id="newPassword" type="password" required minlength="4" maxlength="64" autocomplete="new-password" placeholder="อย่างน้อย 4 ตัวอักษร"></div>
+              <div class="field"><label for="confirmPassword">ยืนยันรหัสผ่านใหม่</label><input id="confirmPassword" type="password" required minlength="4" maxlength="64" autocomplete="new-password" placeholder="กรอกรหัสผ่านอีกครั้ง"></div>
+            </div>
+            <p class="field-note">อนุญาตรหัสผ่าน 4–64 ตัวอักษร แต่แนะนำ 8 ตัวอักษรขึ้นไปเพื่อความปลอดภัย • หลังเปลี่ยน ระบบจะให้ออกจากระบบและเข้าสู่ระบบใหม่</p>
+            <div class="inline-actions"><button id="changePasswordBtn" class="btn btn-primary btn-small" type="submit">บันทึกรหัสผ่านใหม่</button></div>
+          </form>
+        </section>
+        <hr class="rule"><div class="inline-actions" style="justify-content:space-between"><span class="field-note">โหมดผู้ดูแลระบบ • เซสชันหมดอายุภายใน 6 ชั่วโมง</span><button id="logoutBtn" type="button" class="btn btn-subtle btn-small">ออกจากระบบ</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="message hidden" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    'use strict';
+    const $=id=>document.getElementById(id);
+    const fmt=n=>Number(n||0).toLocaleString('th-TH');
+
+    // sessionStorage อาจถูกปิดกั้นในบาง Browser/iframe; ต้องไม่ให้ข้อผิดพลาดนี้
+    // หยุดการทำงานของ JavaScript ทั้งหน้าเว็บและทำให้เมนูกดไม่ได้
+    const safeSession = (() => {
+      let store = null;
+      try {
+        store = window.sessionStorage;
+        const probe = '__nqw_storage_probe__';
+        store.setItem(probe, '1');
+        store.removeItem(probe);
+      } catch (e) { store = null; }
+      return {
+        getItem(key) { try { return store ? store.getItem(key) : null; } catch (e) { return null; } },
+        setItem(key, value) { try { if (store) store.setItem(key, value); } catch (e) {} },
+        removeItem(key) { try { if (store) store.removeItem(key); } catch (e) {} }
+      };
+    })();
+
+    let gradeChart=null, genderChart=null, statusGradeChart=null, isFetching=false, pendingRefresh=false,
+      adminToken=safeSession.getItem('nqw_admin_token')||'',
+      statusToken=safeSession.getItem('nqw_student_status_token')||'';
+    let toastTimer=null, chartLibraryPromise=null, lastStatusResult=null, lastReportPdfUrl='', lastReportPdfName='', reportRequestSerial=0;
+    function loadChartScript(src){
+      return new Promise((resolve,reject)=>{
+        const script=document.createElement('script');
+        script.src=src;script.async=true;
+        script.onload=()=>typeof Chart!=='undefined'?resolve():reject(new Error('ไม่พบ Chart.js หลังโหลดไฟล์'));
+        script.onerror=()=>{script.remove();reject(new Error('โหลด '+src+' ไม่สำเร็จ'));};
+        document.head.appendChild(script);
+      });
+    }
+    function ensureChartLibrary(){
+      if(typeof Chart!=='undefined')return Promise.resolve();
+      if(chartLibraryPromise)return chartLibraryPromise;
+      chartLibraryPromise=(async()=>{
+        const sources=[
+          'https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js',
+          'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.8/chart.umd.min.js'
+        ];
+        let lastError=null;
+        for(const src of sources){
+          try{await loadChartScript(src);if(typeof Chart!=='undefined')return;}
+          catch(err){lastError=err;}
+        }
+        throw lastError||new Error('ไม่สามารถโหลดไลบรารีกราฟได้');
+      })().catch(err=>{chartLibraryPromise=null;throw err;});
+      return chartLibraryPromise;
+    }
+    const hasAppsScript=()=>typeof google!=='undefined' && google.script &&
+      google.script.run && typeof google.script.run.withSuccessHandler==='function';
+    function runGas(name,...args){
+      return new Promise((resolve,reject)=>{
+        if(!hasAppsScript())return reject(new Error('กรุณาเปิดระบบผ่าน URL ที่ Deploy จาก Google Apps Script'));
+        let settled=false;
+        const timer=setTimeout(()=>{
+          settled=true;
+          reject(new Error('เซิร์ฟเวอร์ใช้เวลานานเกิน 45 วินาที กรุณากดรีเฟรชอีกครั้ง'));
+        },45000);
+        const finish=(handler,value)=>{
+          if(settled)return;
+          settled=true;clearTimeout(timer);handler(value);
+        };
+        try{
+          const runner=google.script.run
+            .withSuccessHandler(value=>finish(resolve,value))
+            .withFailureHandler(error=>finish(reject,new Error(error&&error.message?error.message:String(error))));
+          // google.script.run เป็น RPC proxy ของ Apps Script ไม่ใช่ object ปกติ
+          // จึงห้ามตรวจสอบ method ด้วย typeof runner[name] เพราะอาจได้ undefined
+          // แม้ฟังก์ชันจะมีอยู่จริงในฝั่งเซิร์ฟเวอร์
+          const methodName=String(name||'').trim();
+          if(!/^[A-Za-z][A-Za-z0-9_]*$/.test(methodName)){
+            throw new Error('ชื่อฟังก์ชันฝั่งเซิร์ฟเวอร์ไม่ถูกต้อง');
+          }
+          if(methodName==='generateStudentStatusReportPdf'){
+            runner.generateStudentStatusReportPdf(...args);
+          }else{
+            runner[methodName](...args);
+          }
+        }catch(error){finish(reject,error);}
+      });
+    }
+    function showLoadError(message){
+      const host=$('loadError');host.replaceChildren();
+      const text=document.createElement('div');text.className='error-text';
+      text.textContent='ไม่สามารถแสดงข้อมูลได้: '+String(message||'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ');
+      const retry=document.createElement('button');retry.type='button';
+      retry.className='btn btn-primary btn-small';retry.textContent='ลองโหลดอีกครั้ง';
+      retry.addEventListener('click',()=>fetchData(true));
+      host.append(text,retry);host.classList.remove('hidden');
+    }
+    function clearLoadError(){
+      const host=$('loadError');host.replaceChildren();host.classList.add('hidden');
+    }
+    function toast(text,bad=false){
+      const el=$('toast');el.textContent=text;el.classList.toggle('bad',bad);el.classList.remove('hidden');
+      clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),5500);
+    }
+    function busy(button,yes,text){
+      if(yes){button.dataset.oldText=button.textContent;button.disabled=true;button.textContent=text||'กำลังดำเนินการ...';}
+      else{button.disabled=false;button.textContent=button.dataset.oldText||button.textContent;}
+    }
+    function safe(str){return String(str??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+    function setStatus(text,bad=false){$('updateStatus').textContent=text;$('statusDot').style.background=bad?'#e65378':'#12b981';}
+    async function fetchData(force=false){
+      if(isFetching){if(force)pendingRefresh=true;return;}
+      isFetching=true;
+      const btn=$('refreshBtn');
+      if(force)busy(btn,true,'↻ กำลังรีเฟรช');
+      setStatus(force?'กำลังรีเฟรชข้อมูล...':'กำลังโหลดข้อมูล...',false);
+      try{
+        const res=await runGas('getDashboardData',force);
+        if(!res||!res.success)throw new Error(res&&res.error?res.error:'เซิร์ฟเวอร์ไม่ส่งข้อมูลกลับมา');
+        renderData(res);
+        clearLoadError();
+        const time=new Date(res.serverTime||Date.now()).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+        setStatus('เชื่อมต่อแล้ว • ตรวจสอบล่าสุด '+time);
+      }catch(err){
+        const message=err&&err.message?err.message:String(err);
+        setStatus('ไม่สามารถดึงข้อมูลได้',true);
+        showLoadError(message);
+        toast(message,true);
+      }finally{
+        isFetching=false;
+        if(force)busy(btn,false);
+        if(pendingRefresh){pendingRefresh=false;fetchData(true);}
+      }
+    }
+    function renderData(res){
+      const s=res.summary||{};
+      [['v-levels',s.totalLevels],['v-rooms',s.totalRooms],['v-total',s.grandTotal],
+       ['v-status-total',s.totalStatus],['v-behavior',s.studentsWithBehaviorScore],
+       ['t-male',s.totalMale],['t-female',s.totalFemale],['t-total',s.grandTotal],
+       ['t-status-male',s.statusMale],['t-status-female',s.statusFemale],['t-status-total',s.studentsWithStatus]]
+        .forEach(([id,value])=>$(id).textContent=fmt(value));
+      const d=res.gradeData||[];
+      $('rowTag').textContent=fmt(d.length)+' ระดับชั้น';
+      if(!d.length){$('tableBody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:#78869c">ไม่พบข้อมูลจากแท็บ ม.1/1–ม.6/5</td></tr>';}
+      else{
+        $('tableBody').innerHTML=d.map(item=>`<tr><td>${safe(item.grade)}</td><td>${fmt(item.male)}</td><td>${fmt(item.female)}</td><td><strong>${fmt(item.total)}</strong></td><td>${fmt(item.statusMale)}</td><td>${fmt(item.statusFemale)}</td><td><strong>${fmt(item.statusTotal)}</strong></td></tr>`).join('');
+      }
+      const max=d.length?d.reduce((a,b)=>a.total>=b.total?a:b):null;
+      const min=d.length?d.reduce((a,b)=>a.total<=b.total?a:b):null;
+      $('maxGrade').textContent=max?max.grade:'—';$('maxCount').textContent=max?fmt(max.total)+' คน':'ไม่มีข้อมูล';
+      $('minGrade').textContent=min?min.grade:'—';$('minCount').textContent=min?fmt(min.total)+' คน':'ไม่มีข้อมูล';
+      $('behaviorSummary').textContent=fmt(s.studentsWithBehaviorScore)+' คน';
+      $('behaviorNote').textContent='จากนักเรียนทั้งหมด '+fmt(s.grandTotal)+' คน';
+      $('maleLabel').textContent=fmt(s.totalMale)+' คน';$('femaleLabel').textContent=fmt(s.totalFemale)+' คน';
+      $('zeroRecordsLabel').textContent=fmt(s.zero);$('rRecordsLabel').textContent=fmt(s.r);$('msRecordsLabel').textContent=fmt(s.ms);
+      // แสดง KPI และตารางก่อนเสมอ ไม่ให้ปัญหาไลบรารีกราฟทำให้ทั้ง Dashboard ล้ม
+      try{renderCharts(d,s);}catch(err){console.warn('Chart render:',err);toast('ข้อมูลแสดงแล้ว แต่กราฟมีปัญหา: '+(err.message||err),true);}
+    }
+    function renderCharts(rows,s){
+      if(typeof Chart==='undefined'){
+        ensureChartLibrary().then(()=>renderCharts(rows,s)).catch(err=>{
+          console.warn('Chart library:',err);
+          document.querySelectorAll('.chart-area').forEach(area=>{
+            if(!area.querySelector('.chart-warning')){
+              const note=document.createElement('div');note.className='chart-warning';
+              note.textContent='โหลดกราฟไม่สำเร็จ แต่ข้อมูลสรุปและตารางยังใช้งานได้';
+              area.append(note);
+            }
+          });
+        });
+        return;
+      }
+      const labels=rows.map(x=>x.grade);
+      const male=rows.map(x=>x.male||0);
+      const female=rows.map(x=>x.female||0);
+      const genderValues=[s.totalMale||0,s.totalFemale||0];
+      const statusDatasets=[
+        {label:'ชายติด 0',data:rows.map(x=>x.zeroMale||0),backgroundColor:'#2563eb',borderRadius:4},
+        {label:'หญิงติด 0',data:rows.map(x=>x.zeroFemale||0),backgroundColor:'#ec4899',borderRadius:4},
+        {label:'ชายติด ร',data:rows.map(x=>x.rMale||0),backgroundColor:'#60a5fa',borderRadius:4},
+        {label:'หญิงติด ร',data:rows.map(x=>x.rFemale||0),backgroundColor:'#f9a8d4',borderRadius:4},
+        {label:'ชายติด มส',data:rows.map(x=>x.msMale||0),backgroundColor:'#1e40af',borderRadius:4},
+        {label:'หญิงติด มส',data:rows.map(x=>x.msFemale||0),backgroundColor:'#be185d',borderRadius:4}
+      ];
+      const commonFont={family:'Google Sans',size:11};
+
+      if(!gradeChart){
+        gradeChart=new Chart($('gradeChart'),{
+          type:'bar',
+          data:{labels,datasets:[
+            {label:'นักเรียนชาย',data:male,backgroundColor:'#3478f6',borderRadius:6,maxBarThickness:34},
+            {label:'นักเรียนหญิง',data:female,backgroundColor:'#ed5ca8',borderRadius:6,maxBarThickness:34}
+          ]},
+          options:{
+            responsive:true,maintainAspectRatio:false,
+            plugins:{legend:{position:'bottom',labels:{font:commonFont,boxWidth:12,usePointStyle:true}}},
+            scales:{
+              x:{grid:{display:false},ticks:{font:commonFont}},
+              y:{beginAtZero:true,ticks:{precision:0,font:commonFont},grid:{color:'#e8edf7'}}
+            }
+          }
+        });
+      }else{
+        gradeChart.data.labels=labels;
+        gradeChart.data.datasets[0].data=male;
+        gradeChart.data.datasets[1].data=female;
+        gradeChart.update('none');
+      }
+
+      if(!genderChart){
+        genderChart=new Chart($('genderChart'),{
+          type:'doughnut',
+          data:{labels:['นักเรียนชาย','นักเรียนหญิง'],datasets:[{
+            data:genderValues,backgroundColor:['#3478f6','#ed5ca8'],borderWidth:5,borderColor:'#fff',hoverOffset:6
+          }]},
+          options:{cutout:'68%',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+        });
+      }else{
+        genderChart.data.datasets[0].data=genderValues;
+        genderChart.update('none');
+      }
+
+      if(!statusGradeChart){
+        statusGradeChart=new Chart($('statusGradeChart'),{
+          type:'bar',
+          data:{labels,datasets:statusDatasets},
+          options:{
+            responsive:true,maintainAspectRatio:false,
+            plugins:{legend:{position:'bottom',labels:{font:{family:'Google Sans',size:10},boxWidth:10,usePointStyle:true,padding:12}}},
+            scales:{
+              x:{grid:{display:false},ticks:{font:commonFont}},
+              y:{beginAtZero:true,ticks:{precision:0,font:commonFont},grid:{color:'#e8edf7'}}
+            }
+          }
+        });
+      }else{
+        statusGradeChart.data.labels=labels;
+        statusDatasets.forEach((ds,i)=>{statusGradeChart.data.datasets[i].data=ds.data;});
+        statusGradeChart.update('none');
+      }
+    }
+    async function fetchBranding(){
+      try{
+        const r=await runGas('getBranding');
+        if(r.logo){$('schoolLogo').src=r.logo;$('schoolLogo').classList.remove('hidden');$('logoFallback').classList.add('hidden');$('logoThumb').innerHTML='<img alt="โลโก้" src="'+r.logo+'">';}
+        if(r.background){$('pageBackground').style.backgroundImage='url("'+r.background+'")';$('bgThumb').style.backgroundImage='url("'+r.background+'")';$('bgThumb').textContent='';}
+      }catch(e){console.warn('Branding:',e);}
+    }
+    const overlay=$('adminOverlay');
+    function showAdmin(){overlay.classList.remove('hidden');if(adminToken){showAdminView();loadSettings();}else{showLoginView();}}
+    function showLoginView(){$('loginView').classList.remove('hidden');$('adminView').classList.add('hidden');$('adminPassword').value='';}
+    function showAdminView(){$('loginView').classList.add('hidden');$('adminView').classList.remove('hidden');}
+    function switchTab(tab){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('.admin-section').forEach(x=>x.classList.toggle('active',x.id==='tab-'+tab));}
+    async function loadSettings(){
+      try{
+        const r=await runGas('getAdminSettings',adminToken);
+        if(!r.success)throw new Error('ดึงการตั้งค่าไม่ได้');
+        $('tgChat').value=r.telegramChatId||'';$('lineTo').value=r.lineTo||'';
+        $('notifyStatus').textContent='Telegram: '+(r.telegramReady?'ตั้งค่าแล้ว':'ยังไม่ตั้งค่า')+' • LINE: '+(r.lineReady?'ตั้งค่าแล้ว':'ยังไม่ตั้งค่า');
+      }catch(e){adminToken='';safeSession.removeItem('nqw_admin_token');showLoginView();toast(e.message||String(e),true);}
+    }
+    async function login(e){
+      e.preventDefault();const btn=$('loginBtn');busy(btn,true,'กำลังตรวจสอบ...');
+      try{const r=await runGas('loginAdmin',$('adminUsername').value.trim(),$('adminPassword').value);adminToken=r.token;safeSession.setItem('nqw_admin_token',adminToken);showAdminView();await loadSettings();toast('เข้าสู่ระบบผู้ดูแลแล้ว');}
+      catch(e){toast(e.message||String(e),true);}finally{busy(btn,false);}
+    }
+    async function logout(){try{if(adminToken)await runGas('logoutAdmin',adminToken);}catch(e){}adminToken='';safeSession.removeItem('nqw_admin_token');lastStatusResult=null;clearReportPdf();showLoginView();toast('ออกจากระบบแล้ว');}
+    async function changePassword(e){
+      e.preventDefault();
+      const old=$('oldPassword').value,next=$('newPassword').value,confirm=$('confirmPassword').value;
+      if(next.length<4||next.length>64)return toast('รหัสผ่านใหม่ต้องมี 4–64 ตัวอักษร',true);
+      if(next!==confirm)return toast('รหัสผ่านใหม่และยืนยันรหัสผ่านไม่ตรงกัน',true);
+      const btn=$('changePasswordBtn');busy(btn,true,'กำลังเปลี่ยนรหัสผ่าน...');
+      try{
+        const r=await runGas('changeAdminPassword',adminToken,old,next);
+        if(!r.success)throw new Error(r.message||'เปลี่ยนรหัสผ่านไม่ได้');
+        $('changePasswordForm').reset();
+        adminToken='';safeSession.removeItem('nqw_admin_token');lastStatusResult=null;clearReportPdf();showLoginView();
+        toast('เปลี่ยนรหัสผ่านสำเร็จ กรุณาเข้าสู่ระบบด้วยรหัสใหม่');
+      }catch(err){toast(err.message||String(err),true);}finally{busy(btn,false);}
+    }
+    const statusOverlay=$('studentStatusOverlay');
+    function openStudentStatus(){
+      statusOverlay.classList.remove('hidden');
+      const isAdmin=Boolean(adminToken),isStudent=Boolean(statusToken)&&!isAdmin;
+      $('studentStatusLogin').classList.toggle('hidden',isAdmin||isStudent);
+      $('studentStatusLookup').classList.toggle('hidden',!isAdmin&&!isStudent);
+      $('studentStatusForm').classList.toggle('hidden',!isAdmin);
+      $('statusLogoutBtn').classList.toggle('hidden',!isStudent);
+      $('studentStatusResult').classList.add('hidden');
+      $('studentStatusResult').replaceChildren();
+      lastStatusResult=null;
+      clearReportPdf();
+      if(isStudent)loadOwnStudentStatus();
+    }
+    async function statusLogin(e){
+      e.preventDefault();const btn=$('statusLoginBtn');busy(btn,true,'กำลังตรวจสอบเลขบัตร...');
+      try{
+        const username=$('statusStudentUser').value.trim();
+        const password=$('statusStudentPassword').value.trim();
+        if(!/^\d{13}$/.test(username)||username!==password)throw new Error('กรุณากรอกเลขบัตรประชาชน 13 หลักให้ตรงกันทั้งสองช่อง');
+        const r=await runGas('loginStudentStatus',username,password);
+        if(!r.success)throw new Error('ไม่สามารถเข้าสู่ระบบได้');
+        statusToken=r.token;safeSession.setItem('nqw_student_status_token',statusToken);
+        $('statusStudentUser').value='';$('statusStudentPassword').value='';
+        $('studentStatusLogin').classList.add('hidden');$('studentStatusLookup').classList.remove('hidden');
+        $('studentStatusForm').classList.add('hidden');$('statusLogoutBtn').classList.remove('hidden');
+        await loadOwnStudentStatus();
+        toast('เข้าสู่ระบบตรวจสอบสถานะแล้ว');
+      }catch(err){toast(err.message||String(err),true);}finally{busy(btn,false);}
+    }
+    async function loadOwnStudentStatus(){
+      clearReportPdf();
+      const host=$('studentStatusResult');host.replaceChildren();host.classList.remove('hidden');
+      const wait=document.createElement('div');wait.className='status-help';wait.textContent='กำลังตรวจสอบข้อมูลและจัดทำรายงาน...';host.append(wait);
+      try{
+        const bundle=await runGas('generateStudentStatusReportPdf',statusToken,'');
+        if(!bundle||bundle.success!==true)throw new Error(bundle&&bundle.error?bundle.error:'ตรวจสอบไม่สำเร็จ');
+        if(!bundle.studentResult)throw new Error('ระบบไม่ได้รับข้อมูลนักเรียน');
+        await renderStudentStatus(bundle.studentResult,'',bundle);
+      }catch(err){
+        toast(err.message||String(err),true);
+        if(/เซสชันหมดอายุ|เข้าสู่ระบบ/.test(String(err.message||err))){
+          statusToken='';safeSession.removeItem('nqw_student_status_token');
+          $('studentStatusLookup').classList.add('hidden');$('studentStatusLogin').classList.remove('hidden');$('statusLogoutBtn').classList.add('hidden');
+        }
+      }
+    }
+    async function statusLogout(){
+      if(adminToken)return;
+      try{if(statusToken)await runGas('logoutStudentStatus',statusToken);}catch(e){}
+      statusToken='';safeSession.removeItem('nqw_student_status_token');
+      lastStatusResult=null;
+      clearReportPdf();
+      $('studentStatusForm').reset();$('studentStatusResult').replaceChildren();$('studentStatusResult').classList.add('hidden');
+      $('studentStatusLookup').classList.add('hidden');$('studentStatusLogin').classList.remove('hidden');$('statusLogoutBtn').classList.add('hidden');
+      toast('ออกจากระบบตรวจสอบสถานะแล้ว');
+    }
+    function clearReportPdf(){
+      reportRequestSerial++;
+      if(lastReportPdfUrl){
+        try{URL.revokeObjectURL(lastReportPdfUrl);}catch(e){}
+      }
+      lastReportPdfUrl='';
+      lastReportPdfName='';
+    }
+    let pdfJsLoadPromise=null;
+    async function ensurePdfJs(){
+      if(window.pdfjsLib)return window.pdfjsLib;
+      if(!pdfJsLoadPromise){
+        pdfJsLoadPromise=(async()=>{
+          const sources=[
+            {
+              script:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+              worker:'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'
+            },
+            {
+              script:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js',
+              worker:'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'
+            }
+          ];
+          let lastError=null;
+          for(const source of sources){
+            try{
+              await new Promise((resolve,reject)=>{
+                if(window.pdfjsLib)return resolve();
+                const script=document.createElement('script');
+                script.src=source.script;
+                script.async=true;
+                script.onload=resolve;
+                script.onerror=()=>reject(new Error('โหลดไลบรารีแสดงตัวอย่าง PDF ไม่สำเร็จ'));
+                document.head.appendChild(script);
+              });
+              if(!window.pdfjsLib)throw new Error('ไม่พบ PDF.js หลังโหลดไลบรารี');
+              window.pdfjsLib.GlobalWorkerOptions.workerSrc=source.worker;
+              return window.pdfjsLib;
+            }catch(error){lastError=error;}
+          }
+          throw lastError||new Error('ไม่สามารถโหลดระบบแสดงตัวอย่าง PDF ได้');
+        })().catch(error=>{pdfJsLoadPromise=null;throw error;});
+      }
+      return pdfJsLoadPromise;
+    }
+    async function renderStudentStatusPdfPreview(preview,pdfBytes,requestId){
+      const pdfjs=await ensurePdfJs();
+      if(requestId!==reportRequestSerial)return;
+      const loadingTask=pdfjs.getDocument({
+        data:pdfBytes,
+        isEvalSupported:false,
+        useSystemFonts:true
+      });
+      const pdf=await loadingTask.promise;
+      if(requestId!==reportRequestSerial)return;
+
+      const pages=document.createElement('div');
+      pages.className='report-pdf-pages';
+      preview.replaceChildren(pages);
+
+      async function renderOnePage(pageNumber){
+        if(requestId!==reportRequestSerial)return false;
+        const pageBox=document.createElement('section');
+        pageBox.className='report-pdf-page';
+        const loading=document.createElement('div');
+        loading.className='report-pdf-page-label';
+        loading.textContent='กำลังแสดงหน้า '+pageNumber+'...';
+        pageBox.append(loading);
+        pages.append(pageBox);
+
+        const page=await pdf.getPage(pageNumber);
+        if(requestId!==reportRequestSerial)return false;
+
+        const baseViewport=page.getViewport({scale:1});
+        const availableWidth=Math.max(260,(preview.clientWidth||820)-42);
+        const scale=Math.min(1.12,availableWidth/baseViewport.width);
+        const pixelRatio=Math.min(window.devicePixelRatio||1,1.35);
+        const cssViewport=page.getViewport({scale});
+        const renderViewport=page.getViewport({scale:scale*pixelRatio});
+
+        const canvas=document.createElement('canvas');
+        canvas.setAttribute('aria-label','ตัวอย่างรายงาน PDF หน้า '+pageNumber);
+        canvas.width=Math.ceil(renderViewport.width);
+        canvas.height=Math.ceil(renderViewport.height);
+        canvas.style.width=Math.floor(cssViewport.width)+'px';
+        canvas.style.height=Math.floor(cssViewport.height)+'px';
+
+        const context=canvas.getContext('2d',{alpha:false});
+        if(!context)throw new Error('เบราว์เซอร์ไม่รองรับการแสดงตัวอย่าง PDF');
+
+        const label=document.createElement('div');
+        label.className='report-pdf-page-label';
+        label.textContent='หน้า '+pageNumber+' / '+pdf.numPages;
+        pageBox.replaceChildren(canvas,label);
+
+        await page.render({
+          canvasContext:context,
+          viewport:renderViewport,
+          intent:'display'
+        }).promise;
+        return requestId===reportRequestSerial;
+      }
+
+      // แสดงหน้าแรกก่อน ไม่รอวาดหน้าที่เหลือ
+      await renderOnePage(1);
+      if(requestId!==reportRequestSerial)return;
+
+      const meta=$('studentReportMeta');
+      if(pdf.numPages<=1){
+        if(meta)meta.textContent='แสดงตัวอย่างรายงานสำเร็จ • 1 หน้า';
+        return;
+      }
+      if(meta)meta.textContent='แสดงหน้า 1 / '+pdf.numPages+' • กำลังโหลดหน้าถัดไป';
+
+      const renderRemaining=async()=>{
+        try{
+          for(let pageNumber=2;pageNumber<=pdf.numPages;pageNumber++){
+            if(requestId!==reportRequestSerial)return;
+            await renderOnePage(pageNumber);
+          }
+          if(requestId===reportRequestSerial && meta){
+            meta.textContent='แสดงตัวอย่างรายงานสำเร็จ • '+pdf.numPages+' หน้า';
+          }
+        }catch(error){
+          if(requestId===reportRequestSerial){
+            console.warn('Progressive PDF page render:',error);
+            if(meta)meta.textContent='แสดงหน้าแรกแล้ว • บางหน้าต้องดาวน์โหลด PDF เพื่อดูเพิ่มเติม';
+          }
+        }
+      };
+
+      if(typeof window.requestIdleCallback==='function'){
+        window.requestIdleCallback(()=>renderRemaining(),{timeout:900});
+      }else{
+        setTimeout(renderRemaining,40);
+      }
+    }
+
+    async function renderStudentStatus(result,searchTerm='',prebuiltReport=null){
+      const host=$('studentStatusResult');
+      clearReportPdf();
+      host.replaceChildren();
+      host.classList.remove('hidden');
+      if(!result.found){
+        lastStatusResult=null;
+        const hint=document.createElement('div');
+        hint.className='status-help';
+        hint.textContent=result.message||'ไม่พบข้อมูล';
+        host.append(hint);
+        return;
+      }
+
+      lastStatusResult=result;
+      const requestId=reportRequestSerial;
+      const toolbar=document.createElement('div');
+      toolbar.className='report-toolbar';
+
+      const note=document.createElement('span');
+      note.id='studentReportMeta';
+      note.className='field-note';
+      note.textContent='กำลังสร้างรายงานจาก Google Docs ต้นฉบับ...';
+
+      const actions=document.createElement('div');
+      actions.className='inline-actions';
+
+      const downloadButton=document.createElement('button');
+      downloadButton.id='downloadStudentStatusPdfBtn';
+      downloadButton.type='button';
+      downloadButton.className='btn btn-primary btn-small';
+      downloadButton.textContent='ดาวน์โหลด PDF / พิมพ์';
+      downloadButton.disabled=true;
+      downloadButton.addEventListener('click',downloadStudentStatusPdf);
+
+      actions.append(downloadButton);
+      toolbar.append(note,actions);
+
+      const preview=document.createElement('div');
+      preview.className='report-preview-wrap';
+      const loading=document.createElement('div');
+      loading.className='report-loading';
+      loading.textContent='กำลังเชื่อมต่อ Google Docs และจัดทำรายงานตามรูปแบบต้นฉบับ กรุณารอสักครู่';
+      preview.append(loading);
+      host.append(toolbar,preview);
+
+      await loadGoogleDocsReportPdf(preview,searchTerm,requestId,prebuiltReport);
+    }
+    async function loadGoogleDocsReportPdf(preview,searchTerm,requestId,prebuiltReport=null){
+      try{
+        const token=adminToken||statusToken;
+        if(!token)throw new Error('เซสชันหมดอายุ กรุณาเข้าสู่ระบบใหม่');
+        const report=prebuiltReport||await runGas('generateStudentStatusReportPdf',token,searchTerm||'');
+        if(requestId!==reportRequestSerial)return;
+        if(!report||report.success!==true){
+          throw new Error(report&&report.error?report.error:'ตรวจสอบข้อมูลนักเรียนไม่สำเร็จ');
+        }
+        if(report.reportError)throw new Error(report.reportError);
+        if(!report.base64){
+          throw new Error('ระบบไม่ได้รับไฟล์ PDF จาก Google Docs');
+        }
+
+        const bytes=Uint8Array.from(atob(report.base64),char=>char.charCodeAt(0));
+        const blob=new Blob([bytes],{type:'application/pdf'});
+        lastReportPdfUrl=URL.createObjectURL(blob);
+        lastReportPdfName=report.fileName||'student-status-report.pdf';
+
+        // เปิดใช้ปุ่มดาวน์โหลดทันทีที่ได้รับ PDF แล้ว แม้การโหลดตัวแสดงตัวอย่างจะล้มเหลว
+        const downloadButton=$('downloadStudentStatusPdfBtn');
+        if(downloadButton)downloadButton.disabled=false;
+        const meta=$('studentReportMeta');
+        if(meta)meta.textContent=(report.cached?'โหลดรายงานจาก Cache สำเร็จ':'สร้าง PDF สำเร็จ')+' • กำลังแสดงตัวอย่าง...';
+
+        try{
+          await renderStudentStatusPdfPreview(preview,bytes,requestId);
+        }catch(previewError){
+          if(requestId!==reportRequestSerial)return;
+          const ready=document.createElement('div');
+          ready.className='report-ready';
+          const title=document.createElement('div');
+          title.className='report-ready-title';
+          title.textContent='สร้างรายงาน PDF สำเร็จแล้ว';
+          const detail=document.createElement('div');
+          detail.className='report-ready-detail';
+          detail.textContent='แต่ไม่สามารถแสดงตัวอย่างในหน้านี้ได้: '+(previewError.message||String(previewError));
+          const instruction=document.createElement('div');
+          instruction.className='report-ready-detail';
+          instruction.textContent='ยังสามารถดาวน์โหลด PDF เพื่อเปิดดูหรือพิมพ์ได้จากปุ่มด้านบน';
+          ready.append(title,detail,instruction);
+          preview.replaceChildren(ready);
+          if(meta)meta.textContent='สร้าง PDF สำเร็จ • แสดงตัวอย่างไม่สำเร็จ';
+        }
+      }catch(err){
+        if(requestId!==reportRequestSerial)return;
+        const message=err&&err.message?err.message:String(err);
+        preview.replaceChildren();
+
+        const errorBox=document.createElement('div');
+        errorBox.className='status-help';
+        errorBox.textContent='สร้างรายงานจาก Google Docs ไม่สำเร็จ: '+message;
+
+        const retry=document.createElement('button');
+        retry.type='button';
+        retry.className='btn btn-subtle btn-small';
+        retry.style.marginTop='12px';
+        retry.textContent='ลองสร้างรายงานอีกครั้ง';
+        retry.addEventListener('click',function(){
+          const currentRequest=reportRequestSerial;
+          retry.disabled=true;
+          retry.textContent='กำลังลองอีกครั้ง...';
+          loadGoogleDocsReportPdf(preview,searchTerm,currentRequest);
+        });
+        preview.append(errorBox,retry);
+
+        const meta=$('studentReportMeta');
+        if(meta)meta.textContent='ไม่สามารถสร้างรายงานได้';
+      }
+    }
+    function downloadStudentStatusPdf(){
+      if(!lastStatusResult||!lastReportPdfUrl)return;
+      const link=document.createElement('a');
+      link.href=lastReportPdfUrl;
+      link.download=lastReportPdfName||'student-status-report.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+    async function lookupStudentStatus(e){
+      e.preventDefault();
+      if(!adminToken)return toast('การค้นหาด้วยชื่อหรือเลขบัตรใช้ได้เฉพาะผู้ดูแลระบบ',true);
+      const btn=$('statusSearchBtn');busy(btn,true,'กำลังตรวจสอบ...');
+      clearReportPdf();
+      const host=$('studentStatusResult');
+      host.replaceChildren();
+      host.classList.remove('hidden');
+      const wait=document.createElement('div');
+      wait.className='status-help';
+      wait.textContent='กำลังตรวจสอบข้อมูลและจัดทำรายงานในขั้นตอนเดียว...';
+      host.append(wait);
+      try{
+        const term=$('studentStatusSearch').value.trim();
+        if(!term)throw new Error('กรุณากรอกเลขบัตรประชาชนหรือชื่อ–นามสกุล');
+        const bundle=await runGas('generateStudentStatusReportPdf',adminToken,term);
+        if(!bundle||bundle.success!==true)throw new Error(bundle&&bundle.error?bundle.error:'ตรวจสอบไม่สำเร็จ');
+        if(!bundle.studentResult)throw new Error('ระบบไม่ได้รับข้อมูลนักเรียน');
+        await renderStudentStatus(bundle.studentResult,term,bundle);
+      }catch(err){toast(err.message||String(err),true);
+        if(/เซสชันหมดอายุ|เข้าสู่ระบบ/.test(String(err.message||err))){
+          adminToken='';safeSession.removeItem('nqw_admin_token');
+          if(statusToken){$('studentStatusForm').classList.add('hidden');$('statusLogoutBtn').classList.remove('hidden');loadOwnStudentStatus();}
+          else{$('studentStatusLookup').classList.add('hidden');$('studentStatusLogin').classList.remove('hidden');}
+        }
+      }finally{busy(btn,false);}
+    }
+    function asBase64(file){return new Promise((resolve,reject)=>{const rd=new FileReader();rd.onload=()=>resolve(String(rd.result).split(',')[1]);rd.onerror=()=>reject(new Error('อ่านไฟล์ไม่ได้'));rd.readAsDataURL(file);});}
+    function compressImage(file,kind){
+      return new Promise((resolve,reject)=>{
+        if(!/^image\/(png|jpeg|webp)$/.test(file.type))return reject(new Error('รองรับรูปภาพ PNG, JPG, WebP เท่านั้น'));
+        const url=URL.createObjectURL(file),img=new Image();
+        img.onload=()=>{
+          try{
+            const max=kind==='logo'?550:1600,scale=Math.min(1,max/Math.max(img.width,img.height));
+            const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+            canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+            const keepPng=kind==='logo'&&file.type==='image/png',mime=keepPng?'image/png':'image/jpeg';
+            canvas.toBlob(async blob=>{
+              if(!blob)return reject(new Error('ไม่สามารถแปลงภาพได้'));
+              if(blob.size>2*1024*1024)return reject(new Error('ภาพหลังย่อยังเกิน 2 MB กรุณาใช้ภาพขนาดเล็กลง'));
+              try{resolve({mime,base64:await asBase64(blob)});}catch(e){reject(e);}
+            },mime,kind==='logo'?.86:.78);
+          }finally{URL.revokeObjectURL(url);}
+        };
+        img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('ไม่สามารถเปิดภาพได้'));};img.src=url;
+      });
+    }
+    async function uploadImage(kind){
+      const input=$(kind==='logo'?'logoFile':'backgroundFile');const button=$(kind==='logo'?'uploadLogoBtn':'uploadBgBtn');
+      const file=input.files[0];if(!file)return toast('กรุณาเลือกรูปภาพ',true);
+      busy(button,true,'กำลังบันทึก...');
+      try{const pic=await compressImage(file,kind);const r=await runGas('uploadBranding',adminToken,kind,pic.base64,pic.mime);if(!r.success)throw new Error(r.error);await fetchBranding();toast(r.message);input.value='';}
+      catch(e){toast(e.message||String(e),true);}finally{busy(button,false);}
+    }
+    async function saveNotify(){
+      const btn=$('saveNotifyBtn');busy(btn,true,'กำลังบันทึก...');
+      try{
+        const form={telegramToken:$('tgToken').value.trim(),telegramChatId:$('tgChat').value.trim(),
+          lineToken:$('lineToken').value.trim(),lineTo:$('lineTo').value.trim(),clearTelegram:$('clearTg').checked,clearLine:$('clearLine').checked};
+        const r=await runGas('saveNotificationSettings',adminToken,form);
+        $('tgToken').value='';$('lineToken').value='';$('clearTg').checked=false;$('clearLine').checked=false;
+        $('notifyStatus').textContent='Telegram: '+(r.telegramReady?'ตั้งค่าแล้ว':'ยังไม่ตั้งค่า')+' • LINE: '+(r.lineReady?'ตั้งค่าแล้ว':'ยังไม่ตั้งค่า');
+        toast('บันทึกการตั้งค่าแจ้งเตือนเรียบร้อย');
+      }catch(e){toast(e.message||String(e),true);}finally{busy(btn,false);}
+    }
+    async function testNotify(){
+      const btn=$('testNotifyBtn');busy(btn,true,'กำลังทดสอบ...');
+      try{
+        const r=await runGas('testNotifications',adminToken);
+        if(r.error)throw new Error(r.error);
+        toast('Telegram: '+r.telegram+' | LINE: '+r.line,!r.success);
+      }catch(e){toast(e.message||String(e),true);}finally{busy(btn,false);}
+    }
+    // ใช้ Event Delegation: เมนูและปุ่มยังทำงานได้ แม้บางส่วนของหน้าเว็บโหลดช้าหรือเกิดข้อผิดพลาด
+    let appInitialized=false;
+    document.addEventListener('click',function(event){
+      const target=event.target instanceof Element ? event.target : event.target.parentElement;
+      if(!target)return;
+      if(target===statusOverlay){statusOverlay.classList.add('hidden');return;}
+      if(target===overlay){overlay.classList.add('hidden');return;}
+
+      const tab=target.closest('[data-tab]');
+      if(tab){event.preventDefault();switchTab(tab.dataset.tab);return;}
+
+      const button=target.closest('button');
+      if(!button)return;
+      switch(button.id){
+        case 'refreshBtn': event.preventDefault(); fetchData(true); break;
+        case 'printBtn': event.preventDefault(); window.print(); break;
+        case 'adminBtn': event.preventDefault(); showAdmin(); break;
+        case 'studentStatusBtn': event.preventDefault(); openStudentStatus(); break;
+        case 'closeStudentStatus': event.preventDefault(); statusOverlay.classList.add('hidden'); break;
+        case 'closeAdmin': event.preventDefault(); overlay.classList.add('hidden'); break;
+        case 'logoutBtn': event.preventDefault(); logout(); break;
+        case 'statusLogoutBtn': event.preventDefault(); statusLogout(); break;
+        case 'statusClearBtn':
+          event.preventDefault();
+          lastStatusResult=null;
+          clearReportPdf();
+          $('studentStatusForm').reset();
+          $('studentStatusResult').replaceChildren();
+          $('studentStatusResult').classList.add('hidden');
+          break;
+        case 'uploadLogoBtn': event.preventDefault(); uploadImage('logo'); break;
+        case 'uploadBgBtn': event.preventDefault(); uploadImage('background'); break;
+        case 'saveNotifyBtn': event.preventDefault(); saveNotify(); break;
+        case 'testNotifyBtn': event.preventDefault(); testNotify(); break;
+      }
+
+    });
+
+    document.addEventListener('submit',function(event){
+      const form=event.target;
+      switch(form.id){
+        case 'studentStatusLoginForm': statusLogin(event); break;
+        case 'studentStatusForm': lookupStudentStatus(event); break;
+        case 'loginForm': login(event); break;
+        case 'changePasswordForm': changePassword(event); break;
+      }
+    });
+
+    function initApp(){
+      if(appInitialized)return;
+      appInitialized=true;
+      try{
+        const dateLine=$('dateLine');
+        if(dateLine)dateLine.textContent='ณ วันที่ '+new Date().toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
+        document.body.dataset.appReady='true';
+
+        // โหลด PDF.js ล่วงหน้าช่วง browser ว่าง ลดเวลารอเมื่อกดตรวจสอบรายงานครั้งแรก
+        const warmPdfPreview=()=>ensurePdfJs().catch(error=>console.warn('PDF preview preload skipped:',error));
+        if(typeof window.requestIdleCallback==='function'){
+          window.requestIdleCallback(warmPdfPreview,{timeout:1800});
+        }else{
+          setTimeout(warmPdfPreview,500);
+        }
+
+        if(!hasAppsScript()){
+          setStatus('ยังไม่ได้เชื่อมต่อ Google Apps Script',true);
+          showLoadError('กรุณาเปิด URL ของ Google Apps Script Web App ที่ลงท้ายด้วย /exec หรือ /dev ไม่ใช่ไฟล์ HTML หรือหน้า Preview');
+        }else{
+          fetchData();
+          fetchBranding();
+          setInterval(()=>{
+            if(document.visibilityState==='visible' && !isFetching)fetchData(false);
+          },300000);
+        }
+      }catch(err){
+        console.error('initApp failed:',err);
+        const message='เริ่มต้นหน้าเว็บไม่สำเร็จ: '+(err&&err.message?err.message:String(err));
+        try{setStatus('เกิดข้อผิดพลาดในการเริ่มระบบ',true);showLoadError(message);}catch(e){}
+      }
+    }
+
+    // แสดงข้อผิดพลาด JavaScript ให้เห็น แทนการปล่อยให้หน้าเว็บค้างโดยไม่มีคำอธิบาย
+    window.addEventListener('error',event=>{
+      console.error('Frontend error:',event.error||event.message);
+      if($('loadError') && !$('loadError').classList.contains('hidden'))return;
+      try{showLoadError('JavaScript: '+(event.message||'เกิดข้อผิดพลาดในหน้าเว็บ'));}catch(e){}
+    });
+    window.addEventListener('unhandledrejection',event=>{
+      const reason=event.reason;
+      console.error('Unhandled promise:',reason);
+      try{toast('ระบบพบข้อผิดพลาด: '+(reason&&reason.message?reason.message:String(reason)),true);}catch(e){}
+    });
+
+    // รองรับทั้งกรณี Script ทำงานก่อนและหลัง DOMContentLoaded
+    if(document.readyState==='loading'){
+      document.addEventListener('DOMContentLoaded',initApp,{once:true});
+    }else{
+      initApp();
+    }
+  </script>
+</body>
+</html>
